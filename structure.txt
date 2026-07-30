@@ -1,0 +1,121 @@
+Recommended Website Structure
+1. Home
+The homepage should provide a concise overview and guide visitors to key areas.
+Suggested sections:
+•	Hero banner with mission statement
+•	Impact statistics
+•	Latest news
+•	Upcoming events
+•	Featured conferences
+•	Outreach highlights
+•	Call-to-action (Join, Donate, Collaborate)
+
+2. About Us
+Pages
+•	Vision & Mission
+•	History of COMSYS
+•	President's Message
+•	Secretary's Message
+•	Trustees
+•	Executive Committee
+•	Our Values
+•	Strategic Roadmap (Vision 2035)
+3. Conferences
+Separate conference microsites can still exist, but the Trust should maintain an overview.
+Pages
+•	Conference Overview
+•	COMSYS Series
+•	ICDEC Series
+•	Past Conferences
+•	Upcoming Conferences
+•	Proceedings
+•	Keynote Speakers
+•	Awards
+•	Gallery
+
+4. Internship & Career
+Pages
+•	Internship Opportunities
+•	Research Internship
+•	Volunteer Opportunities
+•	Mentor Programme
+
+5. Outreach & Social Impact
+Pages
+•	Community Outreach
+•	Rural Education
+•	STEM Promotion
+•	Blood Donation Camps
+•	Medical Camps
+•	Science Exhibitions
+•	Digital Literacy
+
+6. Innovation & Entrepreneurship
+Pages
+•	Hackathons
+•	Innovation Challenges
+•	Startup Support
+•	Innovation Awards
+
+7. News & Media
+Pages
+•	Latest News
+•	Press Releases
+•	Events
+•	Blog
+•	Media Coverage
+•	Videos
+•	Newsletter Archive
+
+8. Gallery
+Pages
+•	Photo Gallery
+•	Video Gallery
+•	Conference Gallery
+•	Outreach Gallery
+•	Awards Gallery
+
+9. Transparency & Governance
+Pages
+•	Registration Certificates
+•	Annual Reports
+•	12AB & 80G Documents
+•	Governance Policies
+•	Ethics Policy
+•	Privacy Policy
+10. Support Us
+Pages
+•	Donate
+•	CSR Partnership
+•	Sponsorship
+•	Endowment Fund
+•	Scholarship Fund
+•	Research Support
+•	Volunteer
+11. Contact
+Pages
+•	Contact Information
+•	Office Locations
+•	Google Map
+•	Enquiry Form
+•	Social Media
+•	Frequently Asked Questions
+
+Footer (Quick Links)
+The footer should complement the main navigation with essential links:
+•	About COMSYS
+•	Vision & Mission
+•	Trustees
+•	Conferences
+•	Outreach
+•	News
+•	Donate
+•	CSR Partnership
+•	Volunteer
+•	Internship
+•	Contact
+•	Privacy Policy
+•	Terms of Use
+•	Copyright
+•	Sitemap
+
