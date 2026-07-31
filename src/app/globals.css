@@ -145,3 +145,17 @@ body {
 .animate-shimmer {
   animation: shimmer 1.6s infinite;
 }
+
+@keyframes flow-line {
+  0% {
+    stroke-dashoffset: 1200;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+.animate-flow-graph {
+  stroke-dasharray: 1200;
+  animation: flow-line 6s linear infinite;
+}
