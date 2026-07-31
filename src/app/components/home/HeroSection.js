@@ -1,48 +1,64 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { ArrowRight, Award, Globe, Users, Zap } from "lucide-react";
+import { ArrowRight, Sparkles, Award, Globe, Users, Zap } from "lucide-react";
 
 export default function Hero() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
-  const [particles, setParticles] = useState([]); // empty on server AND on first client render
+  const [particles, setParticles] = useState([]);
 
+  // Generate random particles only on the client side after mount to prevent SSR mismatch
   useEffect(() => {
-    // Runs only after mount (client-only), so server HTML and the first
-    // client render both have zero particles — no hydration mismatch.
-    setParticles(
-      Array.from({ length: 30 }).map((_, i) => ({
-        id: i,
-        size: Math.random() * 6 + 2,
-        left: `${Math.random() * 100}%`,
-        bottom: `${Math.random() * -30}%`,
-        duration: Math.random() * 6 + 4,
-        delay: Math.random() * 3,
-      }))
-    );
+    const generated = Array.from({ length: 30 }).map((_, i) => ({
+      id: i,
+      size: Math.random() * 6 + 2,
+      left: `${Math.random() * 100}%`,
+      bottom: `${Math.random() * -30}%`,
+      duration: Math.random() * 6 + 4,
+      delay: Math.random() * 3,
+    }));
+    setParticles(generated);
   }, []);
+
+  const centralCardRef = useRef(null);
+  const [centralRotate, setCentralRotate] = useState({ x: 0, y: 0 });
 
   const handleMouseMove = (e) => {
     const rect = e.currentTarget.getBoundingClientRect();
-    setMousePosition({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-    });
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    setMousePosition({ x, y });
+
+    if (centralCardRef.current) {
+      const cardRect = centralCardRef.current.getBoundingClientRect();
+      const cardCenterX = cardRect.left + cardRect.width / 2;
+      const cardCenterY = cardRect.top + cardRect.height / 2;
+      
+      const rotateX = ((e.clientY - cardCenterY) / (cardRect.height / 2)) * -12;
+      const rotateY = ((e.clientX - cardCenterX) / (cardRect.width / 2)) * 12;
+      
+      setCentralRotate({ x: rotateX, y: rotateY });
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    setCentralRotate({ x: 0, y: 0 });
   };
 
   return (
     <section
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      className="relative overflow-hidden py-36 lg:py-52 bg-[#020617] text-white border-b border-blue-500/40 cursor-default"
+      onMouseLeave={handleMouseLeave}
+      className="relative overflow-hidden py-36 lg:py-52 bg-[#020617] text-white border-b border-blue-500/40 cursor-default perspective-[1000px]"
     >
       {/* Interactive Mouse Ripple / Spotlight Follower */}
       {isHovered && (
         <div
-          className="absolute pointer-events-none w-[500px] h-[500px] rounded-full bg-gradient-to-r from-cyan-500/20 via-blue-500/20 to-indigo-500/20 blur-[100px] transition-opacity duration-300"
+          className="absolute pointer-events-none w-[500px] h-[500px] rounded-full bg-gradient-to-r from-cyan-500/20 via-blue-500/20 to-indigo-500/20 blur-[100px] transition-opacity duration-300 z-10"
           style={{
             top: `${mousePosition.y - 250}px`,
             left: `${mousePosition.x - 250}px`,
@@ -62,7 +78,7 @@ export default function Hero() {
         <div className="absolute -inset-full bg-gradient-to-r from-transparent via-cyan-400/30 to-transparent w-1/3 h-full animate-laser"></div>
       </div>
 
-      {/* Floating Kinetic Particle Field */}
+      {/* Floating Kinetic Particle Field (Rendered only after mount) */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {particles.map((p) => (
           <span
@@ -84,24 +100,22 @@ export default function Hero() {
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-14 items-center">
-          {/* Left Column: Headline & Actions */}
+          
+          {/* Left Column: Hypnotic Headline & Actions */}
           <div className="lg:col-span-7 text-center lg:text-left">
             <div className="inline-flex items-center space-x-2.5 bg-blue-500/20 border border-blue-400/50 px-5 py-2.5 rounded-full text-blue-200 text-sm font-bold mb-8 backdrop-blur-3xl shadow-[0_0_30px_rgba(59,130,246,0.4)] animate-pulse">
               <Zap className="w-4 h-4 text-cyan-300 animate-bounce" />
               <span>COMSYS Educational Trust</span>
             </div>
-
+            
             <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight text-white leading-[1.05]">
-              Redefining the Future of{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-blue-300 to-indigo-300 animate-hyper-glow drop-shadow-[0_0_40px_rgba(56,189,248,0.7)]">
-                Science & Trust
-              </span>
+              Redefining the Future of <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-blue-300 to-indigo-300 animate-hyper-glow drop-shadow-[0_0_40px_rgba(56,189,248,0.7)]">Science & Trust</span>
             </h1>
-
+            
             <p className="mt-6 text-lg sm:text-xl text-blue-100/90 max-w-2xl mx-auto lg:mx-0 leading-relaxed font-normal">
               Igniting academic brilliance, world-class international symposiums, and deep-rooted community transformation through cutting-edge technology.
             </p>
-
+            
             <div className="mt-10 flex flex-col sm:flex-row justify-center lg:justify-start gap-5">
               <Link
                 href="/support"
@@ -119,14 +133,22 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Right Column: Floating 3D Composition */}
+          {/* Right Column: 3D Mouse-Reacting Interactive Composition */}
           <div className="lg:col-span-5 relative flex items-center justify-center">
             <div className="relative w-full max-w-sm h-[440px]">
-              {/* Central Hyper-Glass Card */}
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-950/95 via-slate-900/95 to-indigo-950/95 border border-cyan-400/50 rounded-3xl p-8 backdrop-blur-3xl shadow-[0_0_50px_rgba(30,58,138,0.8)] flex flex-col justify-between animate-grand-float animate-border-glow">
+              
+              {/* Central 3D Tilting Hyper-Glass Card */}
+              <div
+                ref={centralCardRef}
+                style={{
+                  transform: `rotateX(${centralRotate.x}deg) rotateY(${centralRotate.y}deg)`,
+                  transition: "transform 0.1s ease-out",
+                }}
+                className="absolute inset-0 bg-gradient-to-br from-blue-950/95 via-slate-900/95 to-indigo-950/95 border border-cyan-400/50 rounded-3xl p-8 backdrop-blur-3xl shadow-[0_0_50px_rgba(30,58,138,0.8)] flex flex-col justify-between animate-border-glow z-20"
+              >
                 <div className="flex items-center justify-between">
                   <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500/30 to-cyan-500/30 border border-cyan-400/50 flex items-center justify-center text-cyan-300 shadow-[0_0_20px_rgba(6,182,212,0.4)]">
-                    <Globe className="w-7 h-7 animate-spin" style={{ animationDuration: "15s" }} />
+                    <Globe className="w-7 h-7 animate-spin" style={{ animationDuration: '15s' }} />
                   </div>
                   <span className="text-xs font-black px-4 py-2 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/50 shadow-[0_0_15px_rgba(16,185,129,0.3)]">
                     Global Impact
@@ -134,20 +156,22 @@ export default function Hero() {
                 </div>
                 <div className="space-y-2">
                   <h3 className="text-2xl font-black text-white tracking-wide">Global Research Network</h3>
-                  <p className="text-xs text-blue-200/90 leading-relaxed">
-                    Connecting elite researchers, innovators, and academic visionaries globally.
-                  </p>
+                  <p className="text-xs text-blue-200/90 leading-relaxed">Connecting elite researchers, innovators, and academic visionaries globally.</p>
                 </div>
                 <div className="pt-4 border-t border-white/15 flex items-center justify-between text-xs text-cyan-200 font-bold">
                   <span>Flagship Series</span>
-                  <span className="text-white tracking-widest bg-blue-500/30 px-2.5 py-1 rounded-lg border border-blue-400/40">
-                    COMSYS & ICDEC
-                  </span>
+                  <span className="text-white tracking-widest bg-blue-500/30 px-2.5 py-1 rounded-lg border border-blue-400/40">COMSYS & ICDEC</span>
                 </div>
               </div>
 
               {/* Floating Neon Badge Top-Right */}
-              <div className="absolute -top-8 -right-8 bg-slate-950/95 border border-cyan-400/50 px-5 py-4 rounded-2xl shadow-[0_0_30px_rgba(6,182,212,0.4)] backdrop-blur-3xl flex items-center space-x-3.5 animate-float-slow">
+              <div
+                style={{
+                  transform: `translate(${-centralRotate.y * 0.5}px, ${-centralRotate.x * 0.5}px)`,
+                  transition: "transform 0.15s ease-out",
+                }}
+                className="absolute -top-8 -right-8 bg-slate-950/95 border border-cyan-400/50 px-5 py-4 rounded-2xl shadow-[0_0_30px_rgba(6,182,212,0.4)] backdrop-blur-3xl flex items-center space-x-3.5 z-30"
+              >
                 <div className="w-10 h-10 rounded-xl bg-indigo-500/30 border border-indigo-400/50 flex items-center justify-center text-indigo-300 shadow-inner">
                   <Award className="w-5 h-5 text-cyan-300" />
                 </div>
@@ -159,8 +183,11 @@ export default function Hero() {
 
               {/* Floating Neon Badge Bottom-Left */}
               <div
-                className="absolute -bottom-8 -left-8 bg-slate-950/95 border border-blue-400/50 px-5 py-4 rounded-2xl shadow-[0_0_30px_rgba(59,130,246,0.4)] backdrop-blur-3xl flex items-center space-x-3.5 animate-float"
-                style={{ animationDelay: "2s" }}
+                style={{
+                  transform: `translate(${centralRotate.y * 0.5}px, ${centralRotate.x * 0.5}px)`,
+                  transition: "transform 0.15s ease-out",
+                }}
+                className="absolute -bottom-8 -left-8 bg-slate-950/95 border border-blue-400/50 px-5 py-4 rounded-2xl shadow-[0_0_30px_rgba(59,130,246,0.4)] backdrop-blur-3xl flex items-center space-x-3.5 z-30"
               >
                 <div className="w-10 h-10 rounded-xl bg-cyan-500/30 border border-cyan-400/50 flex items-center justify-center text-cyan-300 shadow-inner">
                   <Users className="w-5 h-5 text-blue-300" />
@@ -170,8 +197,10 @@ export default function Hero() {
                   <div className="text-[11px] text-blue-200/80">Outreach & STEM Camps</div>
                 </div>
               </div>
+
             </div>
           </div>
+
         </div>
       </div>
     </section>
