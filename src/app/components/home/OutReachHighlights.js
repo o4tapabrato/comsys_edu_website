@@ -14,7 +14,7 @@ export default function OutreachHighlights() {
             <div className="w-12 h-12 bg-blue-500/20 text-blue-400 rounded-xl flex items-center justify-center mx-auto mb-6">
               <BookOpen className="w-6 h-6" />
             </div>
-            <h3 className="text-lg font-bold text-white mb-2">Rural Education & STEM[cite: 1]</h3>
+            <h3 className="text-lg font-bold text-white mb-2">Rural Education & STEM</h3>
             <p className="text-sm text-blue-200/70">Promoting foundational science and digital proficiency for underprivileged school children.</p>
           </div>
 
@@ -22,7 +22,7 @@ export default function OutreachHighlights() {
             <div className="w-12 h-12 bg-indigo-500/20 text-indigo-400 rounded-xl flex items-center justify-center mx-auto mb-6">
               <HeartHandshake className="w-6 h-6" />
             </div>
-            <h3 className="text-lg font-bold text-white mb-2">Medical & Blood Donation Camps[cite: 1]</h3>
+            <h3 className="text-lg font-bold text-white mb-2">Medical & Blood Donation Camps</h3>
             <p className="text-sm text-blue-200/70">Organizing health checkup drives and blood donation camps to serve immediate public medical needs.</p>
           </div>
 

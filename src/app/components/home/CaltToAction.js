@@ -14,13 +14,13 @@ export default function CallToAction() {
               href="/support"
               className="bg-white text-blue-950 font-semibold px-8 py-3.5 rounded-xl hover:bg-blue-50 transition shadow-lg"
             >
-              Support Us / Donate[cite: 1]
+              Support Us / Donate
             </Link>
             <Link
               href="/contact"
               className="bg-transparent hover:bg-white/10 text-white border border-white/30 font-semibold px-8 py-3.5 rounded-xl transition"
             >
-              Contact Our Team[cite: 1]
+              Contact Our Team
             </Link>
           </div>
         </div>
