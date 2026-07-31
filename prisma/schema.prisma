@@ -1,13 +1,110 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
-  provider = "prisma-client"
-  output   = "../src/generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider  = "postgresql"
+}
+
+model AboutHero {
+  id          String   @id @default(cuid())
+  eyebrow     String?
+  title       String
+  description String?
+  published   Boolean  @default(true)
+  updatedAt   DateTime @updatedAt
+
+  @@map("about_hero")
+}
+
+model VisionMission {
+  id    String @id @default(cuid())
+  type  String // "vision" | "mission"
+  title String
+  body  String
+
+  @@map("vision_mission")
+}
+
+model HistoryIntro {
+  id    String @id @default(cuid())
+  intro String
+
+  @@map("history_intro")
+}
+
+model HistoryMilestone {
+  id    String @id @default(cuid())
+  year  String
+  title String
+  body  String
+  order Int    @default(0)
+
+  @@map("history_milestones")
+  @@index([order])
+}
+
+model LeadershipMessage {
+  id          String @id @default(cuid())
+  role        String // "president" | "secretary"
+  name        String
+  designation String?
+  message     String
+  photoUrl    String?
+  order       Int    @default(0)
+
+  @@map("leadership_messages")
+}
+
+model Trustee {
+  id          String @id @default(cuid())
+  name        String
+  designation String?
+  photoUrl    String?
+  bio         String?
+  order       Int    @default(0)
+
+  @@map("trustees")
+  @@index([order])
+}
+
+model ExecutiveMember {
+  id          String @id @default(cuid())
+  name        String
+  designation String?
+  photoUrl    String?
+  order       Int    @default(0)
+
+  @@map("executive_committee")
+  @@index([order])
+}
+
+model CoreValue {
+  id          String @id @default(cuid())
+  icon        String // key into your lib/iconMap.js — "target" | "eye" | "heart" etc.
+  title       String
+  description String
+  order       Int    @default(0)
+
+  @@map("core_values")
+  @@index([order])
+}
+
+model RoadmapSection {
+  id    String @id @default(cuid())
+  title String
+
+  @@map("roadmap_section")
+}
+
+model RoadmapMilestone {
+  id     String  @id @default(cuid())
+  year   String
+  title  String
+  body   String
+  status String? // e.g. "In Progress", "Completed", "Planned"
+  order  Int     @default(0)
+
+  @@map("roadmap_milestones")
+  @@index([order])
 }
