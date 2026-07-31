@@ -138,3 +138,10 @@ body {
   background-size: 50px 50px;
   animation: grid-drift 20s linear infinite;
 }
+
+@keyframes shimmer {
+  100% { transform: translateX(100%); }
+}
+.animate-shimmer {
+  animation: shimmer 1.6s infinite;
+}
