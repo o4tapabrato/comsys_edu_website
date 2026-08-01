@@ -145,7 +145,7 @@ export default function Navbar() {
 
             {/* CTA Support Button with rich contrast accent */}
             <Link
-              href="/support"
+              href="/support-us"
               className="ml-3 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-medium px-5 py-2.5 rounded-xl shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200"
             >
               Support Us
