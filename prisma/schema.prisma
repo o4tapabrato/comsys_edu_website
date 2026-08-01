@@ -108,3 +108,18 @@ model RoadmapMilestone {
   @@map("roadmap_milestones")
   @@index([order])
 }
+
+model Gallery {
+  id          String   @id @default(cuid())
+  photoUrl    String
+  heading     String
+  description String?
+  category    String   @default("conference") // "conference" | "outreach" | "awards"
+  time        DateTime @default(now())
+  active      Boolean  @default(true)
+
+  @@map("gallery")
+  @@index([time])
+  @@index([active])
+  @@index([category])
+}
