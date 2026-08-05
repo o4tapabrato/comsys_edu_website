@@ -1,0 +1,41 @@
+import { NextResponse } from "next/server";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
+
+export async function POST(request) {
+  try {
+    const body = await request.json();
+    const { photoUrl, heading, description, category, active } = body;
+
+    // Validation
+    if (!photoUrl || !heading) {
+      return NextResponse.json(
+        { error: "Missing required fields: photoUrl and heading are required." },
+        { status: 400 }
+      );
+    }
+
+    // Create new gallery item in database
+    const newGalleryItem = await prisma.gallery.create({
+      data: {
+        photoUrl,
+        heading,
+        description: description || null,
+        category: category || "conference",
+        active: active !== undefined ? active : true,
+      },
+    });
+
+    return NextResponse.json(
+      { message: "Gallery item created successfully", data: newGalleryItem },
+      { status: 201 }
+    );
+  } catch (error) {
+    console.error("Error creating gallery item:", error);
+    return NextResponse.json(
+      { error: "Internal Server Error", details: error.message },
+      { status: 500 }
+    );
+  }
+}

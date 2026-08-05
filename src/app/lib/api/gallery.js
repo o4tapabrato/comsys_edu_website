@@ -1,3 +1,4 @@
+// import { prisma } from "../prisma";
 import { prisma } from "../prisma";
 
 const DEFAULT_LIMIT = 12;
@@ -63,4 +64,23 @@ export async function getAvailableYears() {
     ORDER BY year DESC
   `;
   return rows.map((r) => r.year);
+}
+
+export async function createGalleryItem(item) {
+  try {
+    const { photoUrl, heading, description, category, active } = item;
+    const NewGalleryItem = await prisma.gallery.create({
+      data: {
+        photoUrl,
+        heading,
+        description: description || null,
+        category: category || "conference",
+        active: active !== undefined ? active : true
+      }
+    });
+    return NewGalleryItem;
+  }
+  catch (error) {
+    throw new Error(error);
+  }
 }
