@@ -6,6 +6,14 @@ datasource db {
   provider  = "postgresql"
 }
 
+enum EventCategory {
+  CONFERENCE
+  COMSYS_HACKATHONS
+  OUTREACH_ACTIVITIES
+  FOUNDATION_DAY
+  UPCOMING_EVENTS
+}
+
 model AboutHero {
   id          String   @id @default(cuid())
   eyebrow     String?
@@ -122,4 +130,21 @@ model Gallery {
   @@index([time])
   @@index([active])
   @@index([category])
+}
+
+model Events {
+  id          String        @id @default(cuid())
+  title       String
+  location    String
+  category    EventCategory
+  year        Int
+  description String?
+  url         String?       // Single URL field for the event
+  startDate   DateTime?     @map("start_date")
+  endDate     DateTime?     @map("end_date")
+  isActive    Boolean       @default(true)
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
+
+  @@map("events")
 }
