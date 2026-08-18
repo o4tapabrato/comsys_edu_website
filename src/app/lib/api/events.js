@@ -2,7 +2,9 @@ import { prisma } from "../prisma";
 
 export async function getAllEvents() {
     try {
-        const allEvents = await prisma.events.findMany();
+        const allEvents = await prisma.events.findMany({
+            orderBy: 'desc'
+        });
         return allEvents;
     }
     catch (error) {
@@ -17,7 +19,7 @@ export async function getAllConferences() {
                 category: "CONFERENCE"
             },
             orderBy: {
-                date: 'desc'
+                startDate: 'desc'
             }
         });
         return allConferences;
@@ -31,14 +33,14 @@ export async function getConferencesByYear(targetYear) {
     try {
         const conferences = await prisma.events.findMany({
             where: {
-                date: {
+                startDate: {
                     gte: new Date(`${targetYear}-01-01T00:00:00.000Z`),
                     lt: new Date(`${targetYear + 1}-01-01T00:00:00.000Z`),
                 },
                 category: 'CONFERENCE'
             },
             orderBy: {
-                date: 'desc'
+                startDate: 'desc'
             }
         });
         return conferences;
@@ -53,7 +55,7 @@ export async function getEventByYear(targetCategory, targetYear) {
         const events = await prisma.events.findMany({
             where: {
                 category: targetCategory,
-                date: {
+                startDate: {
                     gte: new Date(`${targetYear}-01-01T00:00:00.000Z`),
                     lt: new Date(`${targetYear + 1}-01-01T00:00:00.000Z`),
                 },
@@ -68,7 +70,7 @@ export async function getEventByYear(targetCategory, targetYear) {
 
 export async function createEvent(event) {
     try {
-        const { title, location, category, year, description, url } = event;
+        const { title, location, category, startDate, endDate, year, description, url } = event;
 
         if (!title || !location || !category || !year) {
             throw new Error('missing required fields !!!');
@@ -79,12 +81,29 @@ export async function createEvent(event) {
                 title,
                 location,
                 category,
+                startDate,
+                endDate,
                 year,
                 description: description? description : '',
                 url: url? url : '',
             }
         })
         return newEvent;
+    }
+    catch (error) {
+        throw new Error(error);
+    }
+}
+
+export async function getHomeConferences() {
+    try {
+        const featuredEvents = prisma.events.findMany({
+            take: 3,                  // Limits the result to 3 records
+            orderBy: {
+                createdAt: 'desc',    // Sorts by newest creation date first
+            },
+        })
+        return featuredEvents;
     }
     catch (error) {
         throw new Error(error);
