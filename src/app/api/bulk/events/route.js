@@ -12,7 +12,7 @@ export async function POST(request) {
         }
 
         return NextResponse.json(
-            { message: `Successfullt created ${count} events` },
+            { message: `Successfully created ${count} events` },
             { status: 201 }
         )
     }

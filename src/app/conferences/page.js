@@ -14,40 +14,12 @@ export default function ConferencesPage() {
   const [particles, setParticles] = useState([]);
   const [activeTab, setActiveTab] = useState("upcoming");
   const [searchQuery, setSearchQuery] = useState("");
+  const [loading, setLoading] = useState(true);
 
   // TODO: Replace with backend API fetch (e.g., fetch('/api/conferences'))
-  const [upcomingConferences] = useState([
-    {
-      id: "comsys-2026",
-      title: "International Conference on Computing & System Sciences (COMSYS 2026)",
-      series: "COMSYS Series",
-      date: "December 15-17, 2026",
-      location: "New Delhi, India",
-      desc: "Flagship global summit focusing on artificial intelligence, cloud computing architectures, and secure data systems.",
-      badge: "Flagship Event",
-    },
-    {
-      id: "icdec-2027",
-      title: "Digital Economy & Commerce Symposium (ICDEC 2027)",
-      series: "ICDEC Series",
-      date: "March 20-22, 2027",
-      location: "Bengaluru, India",
-      desc: "Exploring secure financial frameworks, blockchain applications, and sustainable digital market structures.",
-      badge: "High Impact",
-    },
-  ]);
+  const [upcomingConferences, setUpcomingConferences] = useState([]);
 
-  const [pastConferences] = useState([
-    {
-      id: "comsys-2025",
-      title: "COMSYS 2025: Advanced Cloud & AI Systems",
-      series: "COMSYS Series",
-      date: "December 12-14, 2025",
-      location: "Mumbai, India",
-      desc: "Brought together 450+ researchers across 18 countries with 120 peer-reviewed papers published.",
-      proceedingsUrl: "#",
-    },
-  ]);
+  const [pastConferences, setPastConferences] = useState([]);
 
   const keynotes = [
     { name: "Prof. Arthur Pendelton", title: "MIT CSAIL, USA", topic: "Autonomous Distributed Systems & Neural Trust", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=500&q=80" },
@@ -78,6 +50,66 @@ export default function ConferencesPage() {
       delay: Math.random() * 3,
     }));
     setParticles(generated);
+  }, []);
+
+  useEffect(() => {
+    async function fetchConferences() {
+      try {
+        const res = await fetch("/api/conferences/upcoming");
+        if (!res.ok) {
+          throw new Error("Failed to fetch conferences");
+        }
+
+        const json = await res.json();
+
+        const rawData = Array.isArray(json) 
+          ? json 
+          : Array.isArray(json?.data) 
+            ? json.data 
+            : Array.isArray(json?.conferences) 
+              ? json.conferences 
+              : [];
+
+        setUpcomingConferences(rawData);
+      } catch (err) {
+        console.error("Error fetching conferences:", err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchConferences();
+  }, []);
+
+    useEffect(() => {
+    async function fetchConferences() {
+      try {
+        const res = await fetch("/api/conferences/past");
+        if (!res.ok) {
+          throw new Error("Failed to fetch conferences");
+        }
+
+        const json = await res.json();
+
+        const rawData = Array.isArray(json) 
+          ? json 
+          : Array.isArray(json?.data) 
+            ? json.data 
+            : Array.isArray(json?.conferences) 
+              ? json.conferences 
+              : [];
+
+        setPastConferences(rawData);
+      } catch (err) {
+        console.error("Error fetching conferences:", err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchConferences();
   }, []);
 
   return (

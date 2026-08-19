@@ -1,19 +1,19 @@
-import { getHomeConferences } from "@/app/lib/api/events";
+import { getPastConferences } from "@/app/lib/api/events";
 import { NextResponse } from "next/server";
 
-export async function GET(request) {
+export async function GET() {
     try {
-        const homeConferences = await getHomeConferences();
+        const pastConferences = await getPastConferences();
         return NextResponse.json(
-            { data: homeConferences },
+            { data: pastConferences },
             { status: 200 }
-        )
+        );
     }
     catch (error) {
         console.log(error);
         return NextResponse.json(
             { error: "Internal server error !!!" },
             { status: 500 }
-        );
+        )
     }
 }

@@ -84,8 +84,8 @@ export async function createEvent(event) {
                 startDate,
                 endDate,
                 year,
-                description: description? description : '',
-                url: url? url : '',
+                description: description ? description : '',
+                url: url ? url : '',
             }
         })
         return newEvent;
@@ -104,6 +104,45 @@ export async function getHomeConferences() {
             },
         })
         return featuredEvents;
+    }
+    catch (error) {
+        throw new Error(error);
+    }
+}
+
+export async function getUpcomingConferences() {
+    try {
+        const upcomingConferences = await prisma.events.findMany({
+            where: {
+                category: "CONFERENCE",
+                startDate: {
+                    gte: new Date(),
+                },
+            },
+            orderBy: {
+                startDate: 'asc',
+            },
+        });
+        return upcomingConferences;
+    } catch (error) {
+        throw new Error(error);
+    }
+}
+
+export async function getPastConferences() {
+    try {
+        const pastConferences = await prisma.events.findMany({
+            where: {
+                category: "CONFERENCE",
+                endDate: {
+                    lt: new Date()
+                },
+            },
+            orderBy: {
+                endDate: 'desc'
+            }
+        })
+        return pastConferences;
     }
     catch (error) {
         throw new Error(error);

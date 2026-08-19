@@ -40,8 +40,8 @@ export default function FeaturedConferences() {
         console.log(json)
         
         // Safely extract the array whether it's in json, json.data, or fallback to an empty array
-        const rawData = Array.isArray(json.homeConferences) 
-          ? json.homeConferences 
+        const rawData = Array.isArray(json.data) 
+          ? json.data 
           : Array.isArray(json) 
             ? json 
             : [];

@@ -1,17 +1,17 @@
-import { getHomeConferences } from "@/app/lib/api/events";
+import { getUpcomingConferences } from "@/app/lib/api/events";
 import { NextResponse } from "next/server";
 
 export async function GET(request) {
     try {
-        const homeConferences = await getHomeConferences();
+        const upcomingConferences = await getUpcomingConferences();
         return NextResponse.json(
-            { data: homeConferences },
+            { data: upcomingConferences },
             { status: 200 }
-        )
+        );
     }
     catch (error) {
         console.log(error);
-        return NextResponse.json(
+        return NextResponse(
             { error: "Internal server error !!!" },
             { status: 500 }
         );

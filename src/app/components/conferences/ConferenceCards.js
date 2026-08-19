@@ -45,7 +45,7 @@ export default function ConferenceCard({ conference, type = "upcoming", onAction
         <h3 className="text-2xl font-black text-white mb-4 group-hover:text-cyan-200 transition-colors">
           {conference.title}
         </h3>
-        <p className="text-sm text-blue-200/80 mb-6">{conference.desc}</p>
+        <p className="text-sm text-blue-200/80 mb-6">{conference.description}</p>
       </div>
 
       <div className="space-y-4 pt-6 border-t border-white/10 text-xs text-blue-200 font-bold">
