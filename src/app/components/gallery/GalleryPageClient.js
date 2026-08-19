@@ -175,6 +175,7 @@ export default function GalleryPageClient({ initialItems, initialPagination, yea
         )}
       </div>
 
+      {/* LightboxModal moved completely outside the perspective and transform wrappers */}
       <LightboxModal item={selectedMedia} onClose={() => setSelectedMedia(null)} />
     </div>
   );

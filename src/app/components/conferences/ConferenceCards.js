@@ -37,7 +37,7 @@ export default function ConferenceCard({ conference, type = "upcoming", onAction
 
       <div>
         <div className="flex items-center justify-between mb-6">
-          <span className="text-xs font-bold text-cyan-400 uppercase tracking-widest">{conference.series}</span>
+          <span className="text-xs font-bold text-cyan-400 uppercase tracking-widest">{conference.category}</span>
           <span className="text-xs font-black px-3.5 py-1.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-400/40">
             {conference.badge || "Archived"}
           </span>

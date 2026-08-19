@@ -1,41 +1,30 @@
+import { getGalleryItems } from "@/app/lib/api/gallery"; // Adjust path to your function if needed
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient();
+export async function GET(request) {
+    try {
+        // Extract URL search parameters (e.g., /api/gallery?page=1&limit=6)
+        const { searchParams } = new URL(request.url);
+        
+        const page = parseInt(searchParams.get("page")) || 1;
+        const limit = parseInt(searchParams.get("limit")) || 10;
+        const category = searchParams.get("category"); // Optional category filter if supported
 
-export async function POST(request) {
-  try {
-    const body = await request.json();
-    const { photoUrl, heading, description, category, active } = body;
+        // Call your existing paginated function
+        const result = await getGalleryItems({ page, limit, category });
 
-    // Validation
-    if (!photoUrl || !heading) {
-      return NextResponse.json(
-        { error: "Missing required fields: photoUrl and heading are required." },
-        { status: 400 }
-      );
+        return NextResponse.json(
+            { 
+                success: true,
+                data: result 
+            },
+            { status: 200 }
+        );
+    } catch (error) {
+        console.error("Error fetching gallery items:", error);
+        return NextResponse.json(
+            { success: false, error: "Internal server error !!!" },
+            { status: 500 }
+        );
     }
-
-    // Create new gallery item in database
-    const newGalleryItem = await prisma.gallery.create({
-      data: {
-        photoUrl,
-        heading,
-        description: description || null,
-        category: category || "conference",
-        active: active !== undefined ? active : true,
-      },
-    });
-
-    return NextResponse.json(
-      { message: "Gallery item created successfully", data: newGalleryItem },
-      { status: 201 }
-    );
-  } catch (error) {
-    console.error("Error creating gallery item:", error);
-    return NextResponse.json(
-      { error: "Internal Server Error", details: error.message },
-      { status: 500 }
-    );
-  }
 }
