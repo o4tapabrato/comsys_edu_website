@@ -20,7 +20,7 @@ export default function GalleryGrid({ images = [] }) {
         {images.map((item, index) => {
           // Handle both raw URL strings and database object structures
           const isObject = typeof item === "object" && item !== null;
-          const imgUrl = isObject ? (item.photoUrl || item.imageUrl || item.image) : item;
+          const imgUrl = isObject ? item.url : item;
           const title = isObject ? (item.heading || item.title || "Conference Image") : `Conference Image ${index + 1}`;
           const category = isObject ? item.category : "CONFERENCE";
 
