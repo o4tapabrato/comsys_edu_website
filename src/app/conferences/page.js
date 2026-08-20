@@ -16,10 +16,11 @@ export default function ConferencesPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
 
-  // TODO: Replace with backend API fetch (e.g., fetch('/api/conferences'))
   const [upcomingConferences, setUpcomingConferences] = useState([]);
-
   const [pastConferences, setPastConferences] = useState([]);
+  
+  // State for dynamic gallery items from the database API
+  const [galleryImages, setGalleryImages] = useState([]);
 
   const keynotes = [
     { name: "Prof. Arthur Pendelton", title: "MIT CSAIL, USA", topic: "Autonomous Distributed Systems & Neural Trust", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=500&q=80" },
@@ -33,13 +34,7 @@ export default function ConferencesPage() {
     { title: "Trust Governance Excellence Award", desc: "Honoring empirical studies advancing digital public welfare and survey transparency.", prize: "Medal & Citation" },
   ];
 
-  const galleryImages = [
-    "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=600&q=80",
-    "https://images.unsplash.com/photo-1515187029135-18ee286d815b?auto=format&fit=crop&w=600&q=80",
-    "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=600&q=80",
-    "https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&w=600&q=80",
-  ];
-
+  // Generate particles
   useEffect(() => {
     const generated = Array.from({ length: 25 }).map((_, i) => ({
       id: i,
@@ -52,64 +47,57 @@ export default function ConferencesPage() {
     setParticles(generated);
   }, []);
 
+  // Fetch Upcoming Conferences
   useEffect(() => {
-    async function fetchConferences() {
+    async function fetchUpcoming() {
       try {
         const res = await fetch("/api/conferences/upcoming");
-        if (!res.ok) {
-          throw new Error("Failed to fetch conferences");
-        }
-
+        if (!res.ok) throw new Error("Failed to fetch upcoming conferences");
         const json = await res.json();
-
-        const rawData = Array.isArray(json) 
-          ? json 
-          : Array.isArray(json?.data) 
-            ? json.data 
-            : Array.isArray(json?.conferences) 
-              ? json.conferences 
-              : [];
-
+        const rawData = Array.isArray(json) ? json : json?.data || json?.conferences || [];
         setUpcomingConferences(rawData);
       } catch (err) {
-        console.error("Error fetching conferences:", err);
-        setError(err.message);
-      } finally {
-        setLoading(false);
+        console.error("Error fetching upcoming conferences:", err);
       }
     }
-
-    fetchConferences();
+    fetchUpcoming();
   }, []);
 
-    useEffect(() => {
-    async function fetchConferences() {
+  // Fetch Past Conferences
+  useEffect(() => {
+    async function fetchPast() {
       try {
         const res = await fetch("/api/conferences/past");
-        if (!res.ok) {
-          throw new Error("Failed to fetch conferences");
-        }
-
+        if (!res.ok) throw new Error("Failed to fetch past conferences");
         const json = await res.json();
-
-        const rawData = Array.isArray(json) 
-          ? json 
-          : Array.isArray(json?.data) 
-            ? json.data 
-            : Array.isArray(json?.conferences) 
-              ? json.conferences 
-              : [];
-
+        const rawData = Array.isArray(json) ? json : json?.data || json?.conferences || [];
         setPastConferences(rawData);
       } catch (err) {
-        console.error("Error fetching conferences:", err);
-        setError(err.message);
+        console.error("Error fetching past conferences:", err);
+      }
+    }
+    fetchPast();
+  }, []);
+
+  // Fetch Gallery Items from your API
+  useEffect(() => {
+    async function fetchGallery() {
+      try {
+        // Fetching items filtered by the CONFERENCE category (adjust limit as needed)
+        const res = await fetch("/api/gallery?category=CONFERENCE&limit=6");
+        if (!res.ok) throw new Error("Failed to fetch gallery items");
+        const json = await res.json();
+        
+        // Extract items array based on your API response structure ({ success: true, data: { items, pagination } })
+        const items = json?.success && json?.data?.items ? json.data.items : Array.isArray(json?.data) ? json.data : [];
+        setGalleryImages(items);
+      } catch (err) {
+        console.error("Error fetching gallery items:", err);
       } finally {
         setLoading(false);
       }
     }
-
-    fetchConferences();
+    fetchGallery();
   }, []);
 
   return (
@@ -214,7 +202,9 @@ export default function ConferencesPage() {
         {/* Gallery */}
         <section className="space-y-12">
           <h2 className="text-3xl sm:text-4xl font-black text-white text-center">Conference Gallery</h2>
-          <GalleryGrid images={galleryImages} />
+          <GalleryGrid 
+            images={galleryImages} 
+          />
         </section>
 
       </div>
