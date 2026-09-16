@@ -1,6 +1,8 @@
 import { createEvent } from "@/app/lib/api/events";
 import { NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(request) {
     var count = 0;
     try {
