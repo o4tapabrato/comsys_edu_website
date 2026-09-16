@@ -1,6 +1,8 @@
 import { createTrustee } from "@/app/lib/api/trustee";
 import { NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(request) {
     let count = 0;
     const body = await request.json();

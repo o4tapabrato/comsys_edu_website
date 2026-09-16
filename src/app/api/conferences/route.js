@@ -1,6 +1,8 @@
 import { getAllConferences, getAllEvents } from "@/app/lib/api/events";
 import { NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
     try {
         const allConferences = await getAllConferences();

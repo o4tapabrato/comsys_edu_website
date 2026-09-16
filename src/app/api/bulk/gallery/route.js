@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/app/lib/prisma";
 import { createGalleryItem, getGalleryItems } from "@/app/lib/api/gallery";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(request) {
     const body = await request.json();
     let count = 0;
